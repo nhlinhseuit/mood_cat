@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mood Cat</string>
+    <string name="facebook_app_id">1925834138185448</string>
+    <string name="fb_login_protocol_scheme">fbb2e83e87c9ba311926920c2563461099</string>
+    <string name="facebook_client_token">ee21ca3723ef259cc4b94a92981d2cb1</string>
+</resources>
