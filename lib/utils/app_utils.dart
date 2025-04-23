@@ -3,6 +3,16 @@ import 'package:flutter/material.dart';
 class AppUtils {
   static DateTime? _lastPressedAt;
 
+  static String formatDateToVietnamese(DateTime dateTime) {
+    // Lấy ngày, tháng, năm từ DateTime
+    int day = dateTime.day;
+    int month = dateTime.month;
+    int year = dateTime.year;
+
+    // Trả về chuỗi định dạng
+    return "$day tháng $month năm $year";
+  }
+
   /// Hàm xử lý nhấn back 2 lần để thoát app
   static Future<bool> onWillPop(BuildContext context) async {
     final now = DateTime.now();
