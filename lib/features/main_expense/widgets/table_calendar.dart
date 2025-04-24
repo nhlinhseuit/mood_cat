@@ -64,6 +64,35 @@ class _TableEventsExampleState
     ];
   }
 
+  void _onMoodDaySelected(
+      DateTime selectedDay, DateTime focusedDay, MoodByDay mood) async {
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _rangeStart = null; // Important to clean those
+      _rangeEnd = null;
+      _rangeSelectionMode = RangeSelectionMode.toggledOff;
+    });
+
+    var newMoodDocument = await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true, // Toàn màn hình
+      builder: (BuildContext context) {
+        return MoodContentBottomSheet(
+          selectedDay: selectedDay,
+          mood: mood.mood,
+          dayContent: mood.content,
+          dayImageUrls: mood.imageUrls,
+        );
+      },
+    );
+
+    if (newMoodDocument != null) {
+      bloc.add(const FetchMoodListEvent());
+    }
+  }
+
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isBeforeCurrentDate(DateTime.now(), selectedDay)) {
       return;
@@ -258,36 +287,45 @@ class _TableEventsExampleState
     );
   }
 
-  Widget _buildMoodDay(DateTime day, bool isToday, Color color, String emoji) {
+  Widget _buildMoodDay(
+    DateTime day,
+    bool isToday,
+    MoodByDay mood,
+  ) {
     const double emojiSize = 48.0; // Kích thước mỗi emoji
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(
-          width: emojiSize,
-          height: emojiSize,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: color,
-          ),
-          child: Center(
-            child: Text(
-              emoji,
-              style: const TextStyle(fontSize: 28),
+    return GestureDetector(
+      onTap: () {
+        _onMoodDaySelected(day, day, mood);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            width: emojiSize,
+            height: emojiSize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: mood.mood.color,
+            ),
+            child: Center(
+              child: Text(
+                mood.mood.emoji,
+                style: const TextStyle(fontSize: 28),
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 1.0),
-        Text(
-          '${day.day}',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 10,
-            fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+          const SizedBox(height: 1.0),
+          Text(
+            '${day.day}',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -305,6 +343,8 @@ class _TableEventsExampleState
       orElse: () => MoodByDay(
         mood: Mood.none, // Giá trị mặc định cho mood
         date: normalizedDay, // Dùng normalizedDay làm mặc định
+        content: '', // Dùng normalizedDay làm mặc định
+        imageUrls: [], // Dùng normalizedDay làm mặc định
       ),
     );
 
@@ -315,8 +355,7 @@ class _TableEventsExampleState
           ? _buildMoodDay(
               day,
               isToday,
-              moodForDay.mood.color,
-              moodForDay.mood.emoji,
+              moodForDay,
             )
           : isBeforeOrEqualCurrentDate(currentDate, day)
               ? Column(

@@ -12,11 +12,15 @@ import 'dart:io';
 class MoodContentBottomSheet extends StatefulWidget {
   final DateTime selectedDay;
   final Mood mood;
+  final String? dayContent;
+  final List<String>? dayImageUrls;
 
   const MoodContentBottomSheet({
     super.key,
     required this.selectedDay,
     required this.mood,
+    this.dayContent,
+    this.dayImageUrls,
   });
 
   @override
@@ -28,11 +32,20 @@ class _MoodContentBottomSheetState
   late DateTime _selectedDay;
   late Mood _mood;
   final TextEditingController _contentController = TextEditingController();
-  final List<File> _selectedImages = [];
+  final List<File> _selectedImages = []; // Ảnh mới được chọn (File)
+  final List<String> _existingImages = []; // Ảnh cũ từ dayImageUrls (URL)
 
   @override
   void initState() {
     super.initState();
+
+    // Khởi tạo dữ liệu từ widget
+    if (widget.dayContent != null) {
+      _contentController.text = widget.dayContent!;
+    }
+    if (widget.dayImageUrls != null) {
+      _existingImages.addAll(widget.dayImageUrls!); // Lưu ảnh cũ vào danh sách
+    }
     _selectedDay = widget.selectedDay;
     _mood = widget.mood;
   }
@@ -102,9 +115,13 @@ class _MoodContentBottomSheetState
     }
   }
 
-  void _removeImage(int index) {
+  void _removeImage(int index, bool isExistingImage) {
     setState(() {
-      _selectedImages.removeAt(index);
+      if (isExistingImage) {
+        _existingImages.removeAt(index); // Xóa ảnh cũ
+      } else {
+        _selectedImages.removeAt(index); // Xóa ảnh mới
+      }
     });
   }
 
@@ -147,9 +164,7 @@ class _MoodContentBottomSheetState
                                 ),
                                 onPressed: _pickImage,
                               ),
-                              const SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 8),
                               ElevatedButton(
                                 onPressed: () {
                                   bloc.add(
@@ -158,6 +173,8 @@ class _MoodContentBottomSheetState
                                       mood: _mood,
                                       content: _contentController.text,
                                       images: _selectedImages,
+                                      existingImageUrls:
+                                          _existingImages, // Truyền cả ảnh cũ
                                     ),
                                   );
                                 },
@@ -250,6 +267,85 @@ class _MoodContentBottomSheetState
                             ],
                           ),
                           const SizedBox(height: 24.0),
+                          // Hiển thị danh sách ảnh cũ (URL)
+                          if (_existingImages.isNotEmpty)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Column(
+                                children: List.generate(
+                                  _existingImages.length,
+                                  (index) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.white,
+                                              width: 3.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(14.0),
+                                            child: Image.network(
+                                              _existingImages[index],
+                                              width: 400,
+                                              height: 400,
+                                              fit: BoxFit.cover,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Container(
+                                                  width: 400,
+                                                  height: 400,
+                                                  color: Colors.grey,
+                                                  child: const Center(
+                                                    child: Text(
+                                                      'Lỗi tải ảnh',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 12.0,
+                                          right: 12.0,
+                                          child: Container(
+                                            width: 36,
+                                            height: 36,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                            ),
+                                            child: Center(
+                                              child: IconButton(
+                                                icon: const Icon(
+                                                  Icons.close,
+                                                  color: Colors.white,
+                                                  size: 18,
+                                                ),
+                                                onPressed: () =>
+                                                    _removeImage(index, true),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          // Hiển thị danh sách ảnh mới (File)
                           if (_selectedImages.isNotEmpty)
                             Padding(
                               padding:
@@ -301,7 +397,7 @@ class _MoodContentBottomSheetState
                                                   size: 18,
                                                 ),
                                                 onPressed: () =>
-                                                    _removeImage(index),
+                                                    _removeImage(index, false),
                                               ),
                                             ),
                                           ),

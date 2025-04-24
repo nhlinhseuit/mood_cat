@@ -1,13 +1,9 @@
-import 'dart:math';
-
-// import 'package:expense_repository/expense_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mood_cat/features/base/bloc/bloc/theme_bloc.dart';
 import 'package:mood_cat/features/main_expense/main_screen.dart';
 import 'package:mood_cat/features/stat_expense/stat_screen.dart';
-// import 'package:mood_cat/screens/home_expense/get_expenses_blocs/bloc/get_expenses_bloc.dart';
 import 'package:mood_cat/utils/app_utils.dart';
 
 class HomeScreenExpense extends StatefulWidget {
@@ -34,9 +30,6 @@ class _HomeScreenExpenseState extends State<HomeScreenExpense> {
           : Colors.black54;
     }
 
-    // return BlocBuilder<GetExpensesBloc, GetExpensesState>(
-    //   builder: (context, state) {
-    //     if (state is GetExpensesSuccess) {
     return WillPopScope(
       onWillPop: () => AppUtils.onWillPop(context),
       child: Scaffold(
@@ -103,12 +96,5 @@ class _HomeScreenExpenseState extends State<HomeScreenExpense> {
         ),
       ),
     );
-
-    // } else {
-    //   return const Scaffold(
-    //       body: Center(child: CircularProgressIndicator()));
-    // }
-    // },
-    // );
   }
 }

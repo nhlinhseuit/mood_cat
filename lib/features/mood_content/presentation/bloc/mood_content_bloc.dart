@@ -45,7 +45,7 @@ class MoodContentBloc extends Bloc<MoodContentEvent, MoodContentState> {
         cache: false,
       );
 
-      final List<String> imageUrls = [];
+      final List<String> imageUrls = List.from(event.existingImageUrls);
       for (final file in event.images) {
         if (!await file.exists()) {
           throw Exception('File does not exist: ${file.path}');
@@ -116,6 +116,8 @@ class MoodContentBloc extends Bloc<MoodContentEvent, MoodContentState> {
         return MoodByDay(
           mood: stringToMood(moodData.mood),
           date: DateTime(fullDate.year, fullDate.month, fullDate.day),
+          content: moodData.content,
+          imageUrls: moodData.imageUrls,
         );
       }).toList();
 

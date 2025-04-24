@@ -14,12 +14,14 @@ class SaveMoodEvent extends MoodContentEvent {
   final Mood mood;
   final String content;
   final List<File> images;
+  final List<String> existingImageUrls;
 
   const SaveMoodEvent({
     required this.selectedDay,
     required this.mood,
     required this.content,
     required this.images,
+    required this.existingImageUrls,
   });
 }
 
