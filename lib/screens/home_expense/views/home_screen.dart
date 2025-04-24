@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mood_cat/screens/base/bloc/bloc/theme_bloc.dart';
 import 'package:mood_cat/screens/main_expense/main_screen.dart';
+import 'package:mood_cat/screens/stat_expense/stat_screen.dart';
 // import 'package:mood_cat/screens/home_expense/get_expenses_blocs/bloc/get_expenses_bloc.dart';
 import 'package:mood_cat/utils/app_utils.dart';
 
@@ -39,7 +40,7 @@ class _HomeScreenExpenseState extends State<HomeScreenExpense> {
     return WillPopScope(
       onWillPop: () => AppUtils.onWillPop(context),
       child: Scaffold(
-        body: index == 0 ? const MainScreen() : const SizedBox(),
+        body: index == 0 ? const MainScreen() : const StatScreen(),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             boxShadow: [
@@ -120,15 +121,15 @@ class _HomeScreenExpenseState extends State<HomeScreenExpense> {
           child: Container(
             width: 60,
             height: 60,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
-                    Theme.of(context).colorScheme.tertiary,
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.primary,
+                    Color(0xFFFF8D6C),
+                    Color(0xFFE064F7),
+                    Color(0xFF00B2E7),
                   ],
-                  transform: const GradientRotation(pi / 4),
+                  transform: GradientRotation(pi / 4),
                 )),
             child: const Icon(CupertinoIcons.add),
           ),

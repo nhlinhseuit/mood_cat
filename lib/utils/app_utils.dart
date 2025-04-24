@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppUtils {
   static DateTime? _lastPressedAt;
+
+  static Future<User?> getCurrentUser() async {
+    return FirebaseAuth.instance.currentUser;
+  }
 
   static String formatDateToVietnamese(DateTime dateTime) {
     // Lấy ngày, tháng, năm từ DateTime
@@ -11,6 +16,16 @@ class AppUtils {
 
     // Trả về chuỗi định dạng
     return "$day tháng $month năm $year";
+  }
+
+  static String formatDate(DateTime dateTime) {
+    // Lấy ngày, tháng, năm từ DateTime
+    int day = dateTime.day;
+    int month = dateTime.month;
+    int year = dateTime.year;
+
+    // Trả về chuỗi định dạng
+    return "$day/$month/$year";
   }
 
   /// Hàm xử lý nhấn back 2 lần để thoát app

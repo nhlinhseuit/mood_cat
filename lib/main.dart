@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mood_cat/app_view.dart';
+import 'package:mood_cat/app_view_login.dart';
 import 'package:mood_cat/notification_service.dart';
 import 'package:mood_cat/screens/base/app_wrapper.dart';
+import 'package:mood_cat/screens/login/login_bloc/login_bloc.dart';
 import 'package:mood_cat/simple_bloc_observer.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -28,12 +31,27 @@ void main() async {
   // Đăng ký handler cho background messages
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  // Kiểm tra user
+  final user = FirebaseAuth.instance.currentUser;
+  const String green = '\x1B[32m';
+  const String reset = '\x1B[0m';
+  print('$green user $user $reset');
+
+  final bool isLoggedIn = user != null;
+
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   String? token = await messaging.getToken();
   print('FCM Token: $token');
 
-  runApp(const AppWrapper(
-    child: MyAppView(),
-  ));
+  runApp(
+    isLoggedIn
+        ? const AppWrapper(
+            child: MyAppView(),
+          )
+        : BlocProvider(
+            create: (context) => LoginBloc(),
+            child: const MyAppViewLogin(),
+          ),
+  );
 }

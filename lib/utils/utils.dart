@@ -48,6 +48,25 @@ class Event {
   String toString() => title;
 }
 
+bool isBeforeOrEqualCurrentDate(DateTime currentDate, DateTime day) {
+  return day.isBefore(currentDate) && !isSameDay(day, currentDate);
+}
+
+bool isBeforeCurrentDate(DateTime currentDate, DateTime day) {
+  return day.isBefore(currentDate);
+}
+
+// Danh sách các nhãn thứ trong tuần bằng tiếng Việt
+const List<String> vietnameseWeekdays = [
+  'T2', // Thứ Hai
+  'T3', // Thứ Ba
+  'T4', // Thứ Tư
+  'T5', // Thứ Năm
+  'T6', // Thứ Sáu
+  'T7', // Thứ Bảy
+  'CN', // Chủ Nhật
+];
+
 /// Example events.
 ///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.

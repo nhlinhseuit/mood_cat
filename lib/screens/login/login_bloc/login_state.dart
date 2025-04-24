@@ -24,4 +24,4 @@ final class LoginFailure extends LoginState {
   List<Object> get props => [error];
 }
 
-enum LoginMethod { facebook, emailPassword }
+enum LoginMethod { google, emailPassword }

@@ -275,9 +275,9 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 _socialButton(
-                                  FontAwesomeIcons.facebookF,
-                                  const Color(0xFF1877F2),
-                                  LoginMethod.facebook,
+                                  FontAwesomeIcons.google,
+                                  const Color(0xFFDB4437),
+                                  LoginMethod.google,
                                 ), // Facebook blue
                               ],
                             ),
@@ -313,8 +313,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void _handleSigninMethod(LoginMethod loginMethod) {
     switch (loginMethod) {
-      case LoginMethod.facebook:
-        context.read<LoginBloc>().add(LoginWithFacebook());
+      case LoginMethod.google:
+        context.read<LoginBloc>().add(LoginWithGoogle());
         break;
 
       case LoginMethod.emailPassword:
