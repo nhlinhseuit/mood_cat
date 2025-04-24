@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mood_cat/notification_service.dart';
-import 'package:mood_cat/screens/base/bloc/bloc/theme_bloc.dart';
-import 'package:mood_cat/screens/home_expense/views/home_screen.dart';
+import 'package:mood_cat/features/base/bloc/bloc/theme_bloc.dart';
+import 'package:mood_cat/features/home_expense/views/home_screen.dart';
 
 class MyAppView extends StatelessWidget {
   const MyAppView({super.key});

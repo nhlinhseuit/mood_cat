@@ -11,6 +11,7 @@ enum Mood {
   bored, // Chán
   annoyed, // Bực bội
   tired, // Thư giãn
+  none,
 }
 
 extension MoodExtension on Mood {
@@ -35,7 +36,9 @@ extension MoodExtension on Mood {
       case Mood.annoyed:
         return '😠';
       case Mood.tired:
-        return '😩';
+        return '😌';
+      case Mood.none:
+        return '';
     }
   }
 
@@ -61,6 +64,8 @@ extension MoodExtension on Mood {
         return Colors.orange;
       case Mood.tired:
         return Colors.lime;
+      case Mood.none:
+        return Colors.black;
     }
   }
 
@@ -86,6 +91,19 @@ extension MoodExtension on Mood {
         return 'Bực bội';
       case Mood.tired:
         return 'Thư giãn';
+      case Mood.none:
+        return '';
     }
+  }
+}
+
+Mood stringToMood(String moodString) {
+  try {
+    return Mood.values.firstWhere(
+      (mood) => mood.toString().split('.').last == moodString,
+      orElse: () => Mood.happy,
+    );
+  } catch (e) {
+    return Mood.happy; // Trả về null nếu không tìm thấy
   }
 }

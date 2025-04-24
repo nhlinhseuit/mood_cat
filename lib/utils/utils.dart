@@ -2,38 +2,12 @@ import 'dart:ui';
 import 'dart:collection';
 
 import 'package:table_calendar/table_calendar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
-class Utils {
-  Future<bool> getDarkMode() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool("darkMode") ?? false;
-  }
-
-  Future<void> changeDarkMode() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool darkMode = await getDarkMode();
-    prefs.setBool("darkMode", !darkMode);
-  }
-
-  Future<Locale> getLocale() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? localeCode = prefs.getString("locale");
-    return Locale(localeCode ?? "en"); // mặc định là tiếng Anh
-  }
-
-  Future<void> changeLocale() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String current = prefs.getString("locale") ?? "en";
-
-    final String newLocale = current == "en" ? "vi" : "en";
-    await prefs.setString("locale", newLocale);
-  }
-}
+class Utils {}
 
 // Copyright 2019 Aleksander Woźniak
 // SPDX-License-Identifier: Apache-2.0

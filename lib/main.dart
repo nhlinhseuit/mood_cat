@@ -1,14 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mood_cat/app_view.dart';
 import 'package:mood_cat/app_view_login.dart';
+import 'package:mood_cat/core/config/service_locator.dart';
+import 'package:mood_cat/features/base/app_wrapper.dart';
+import 'package:mood_cat/features/login/login_bloc/login_bloc.dart';
 import 'package:mood_cat/notification_service.dart';
-import 'package:mood_cat/screens/base/app_wrapper.dart';
-import 'package:mood_cat/screens/login/login_bloc/login_bloc.dart';
 import 'package:mood_cat/simple_bloc_observer.dart';
+import 'package:mood_cat/utils/app_utils.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -32,7 +33,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // Kiểm tra user
-  final user = FirebaseAuth.instance.currentUser;
+  final user = AppUtils.getCurrentUser();
   const String green = '\x1B[32m';
   const String reset = '\x1B[0m';
   print('$green user $user $reset');
@@ -43,6 +44,8 @@ void main() async {
 
   String? token = await messaging.getToken();
   print('FCM Token: $token');
+
+  await configureInjection();
 
   runApp(
     isLoggedIn

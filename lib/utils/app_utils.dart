@@ -1,11 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mood_cat/core/data/models/user_data.dart';
 
 class AppUtils {
   static DateTime? _lastPressedAt;
 
-  static Future<User?> getCurrentUser() async {
-    return FirebaseAuth.instance.currentUser;
+  static UserData? getCurrentUser() {
+    var user = FirebaseAuth.instance.currentUser;
+    return user == null
+        ? null
+        : UserData(
+            displayName: user.displayName ?? '',
+            email: user.email ?? '',
+            photoURL: user.photoURL ?? '',
+          );
   }
 
   static String formatDateToVietnamese(DateTime dateTime) {

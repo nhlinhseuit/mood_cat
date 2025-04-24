@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:mood_cat/screens/home_expense/views/home_screen.dart';
+import 'package:mood_cat/features/home_expense/views/home_screen.dart';
 
 //TODO1: Xử lý vì sao từ background push tới HomeExpense lỗi  - DONE
 //TODO2: Truyền payload để có thể xử lý được navigate tới màn nào (OK - Backend gửi, nhận được xong lấy ra data từ json như bên izota)

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mood_cat/screens/login/views/login_page.dart';
+import 'package:mood_cat/features/login/views/login_page.dart';
 
 class MyAppViewLogin extends StatelessWidget {
   const MyAppViewLogin({super.key});
